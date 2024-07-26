@@ -492,7 +492,7 @@ public:
 		vector <Solution> solList;
 		Solution best;
 		int temperature = 7;
-		vector <vector<int>> ver;
+		vector <vector<float>> ver;
 		float best_score = s.fitness;
 
 		for (int i = 0; i < 5; i++) {
@@ -506,7 +506,7 @@ public:
 
 			//cout << "fitness score: " << s.fitness << "\n";
 
-			cout << "Score of initial solution: " << s.fitness << "\n";
+			cout << "Score of initial solution: " << s.fitness / s.req.size() << "\n";
 
 			//Solution best = s;
 			Solution cur;
@@ -516,7 +516,7 @@ public:
 
 			int counter = 0;
 			int iter = 0;
-			
+
 
 			uniform_int_distribution<int> prob(1, 10);
 			uniform_int_distribution<int> u_prob(1, 17);
@@ -612,21 +612,21 @@ public:
 					best_score = best_score_curr;
 					counter = 0;
 					best = solList[0];
-					
-					vector <int> vv;
+
+					vector <float> vv;
 					ver.emplace_back(vv);
 
-					ver[ver.size() - 1].emplace_back(int(best.fitness));
-					ver[ver.size() - 1].emplace_back(best.totalEarly);
-					ver[ver.size() - 1].emplace_back(best.totaldarpcase);
-					ver[ver.size() - 1].emplace_back(best.totalLate);
-					ver[ver.size() - 1].emplace_back(int(best.totalCost));
-					ver[ver.size() - 1].emplace_back(best.maxWait);
+					ver[ver.size() - 1].emplace_back(best.fitness);
+					ver[ver.size() - 1].emplace_back(float(best.totalEarly));
+					ver[ver.size() - 1].emplace_back(float(best.totaldarpcase));
+					ver[ver.size() - 1].emplace_back(float(best.totalLate));
+					ver[ver.size() - 1].emplace_back(best.totalCost);
+					ver[ver.size() - 1].emplace_back(float(best.maxWait));
 					//, , , int
-					
+
 					if (ver.size() > 1) {
 						//sort the verification metrics
-						sort(ver.begin(), ver.end(), [&](vector<int> i, vector<int> j) {
+						sort(ver.begin(), ver.end(), [&](vector<float> i, vector<float> j) {
 							return i[0] < j[0];
 							});
 					}
@@ -641,7 +641,8 @@ public:
 				if (optim) {
 					if (iter % 1 == 0) {
 						cout << "Size of solList: " << solList.size() << ", ";
-						cout << "Iteration: " << iter << "; lowest inconvenience score: " << solList[0].fitness << "; " << solList[1].fitness << "; " << solList[2].fitness << "; " << solList[3].fitness << "; " << solList[4].fitness << "\n";
+						cout << "Iteration: " << iter << "; lowest inconvenience score: " << solList[0].fitness / best.req.size() << "; " << solList[1].fitness / best.req.size()
+							<< "; " << solList[2].fitness / best.req.size() << "; " << solList[3].fitness / best.req.size() << "; " << solList[4].fitness / best.req.size() << "\n";
 						//cout << "Counter is now " << counter << "\n";
 					}
 				}
@@ -666,7 +667,7 @@ public:
 			cout << "\nNumber of iterations: " << iter;
 			cout << "\n======================================================================\n";
 			cout << "Initial solution: ";
-			cout << "\nInconvenience score: " << initial.fitness;
+			cout << "\nInconvenience score: " << initial.fitness / initial.req.size();
 			cout << "\nTotal earliness wait time: " << initial.totalEarly;
 			cout << "\nTotal darp-like cases: " << initial.totaldarpcase;
 			cout << "\nTotal lateness wait time: " << initial.totalLate / 5000;
@@ -675,7 +676,7 @@ public:
 			cout << "\n----------------------------------------------------------------------\n";
 			for (int z = 0; z < ver.size(); z++) {
 				cout << "Solution Rank " << z + 1 << ": ";
-				cout << "\nInconvenience score: " << ver[z][0];
+				cout << "\nInconvenience score: " << ver[z][0] / initial.req.size();
 				cout << "\nTotal earliness wait time: " << ver[z][1];
 				cout << "\nTotal darp-like cases: " << ver[z][2];
 				cout << "\nTotal lateness wait time: " << ver[z][3] / 5000;

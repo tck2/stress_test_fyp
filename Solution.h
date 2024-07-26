@@ -155,12 +155,14 @@ public:
 		}
 
 		penalty();
+
 	}
 	//calculate total earliness time
 	void calcTotalEarly() {
 		for (int i = 0; i < CList.size(); i++) {
 			totalEarly += CList[i]->early;
 		}
+		
 	}
 
 	//calculate total lateness time
@@ -193,11 +195,15 @@ public:
 			cout << "Failed to open file\n";
 		}
 
+		//totalEarly = totalEarly / req.size();
+		//totaldarpcase = totaldarpcase / req.size();
+		//totalCost = totalCost / req.size();
+
 		out << "\nHighest single request earliness waiting time: " << maxWait << " minutes\n";
-		out << "\nTotal earliness waiting time for all participant: " << totalEarly << " minutes\n";
-		out << "\nTotal lateness waiting time for all participant: " << totalLate / 5000 << " minutes\n";
-		out << "\nTotal cost for all participant: RM" << totalCost << "\n";
-		out << "\nTotal number of darp-like cases: " << totaldarpcase << "\n";
+		out << "\nAverage earliness waiting time for each request: " << totalEarly / req.size() << " minutes\n";
+		out << "\nTotal lateness waiting time for each request: " << totalLate / 5000 << " minutes\n";
+		out << "\nAverage cost for each request: RM" << totalCost / req.size() << "\n";
+		out << "\nAverage number of darp-like cases: " << totaldarpcase / req.size() << "\n";
 
 		out.close();
 	}
@@ -226,6 +232,7 @@ public:
 		for (int i = 0; i < CList.size(); i++) {
 			totaldarpcase += CList[i]->darplike;
 		}
+
 	}
 	
 	//calculate cost, waiting time, and darp time
@@ -267,6 +274,8 @@ public:
 
 
 		fitness = (totalEarly * e) + (totaldarpcase * d) + (totalCost * c) + (totalLate * l);
+
+		//fitness = fitness / req.size();
 
 	}
 

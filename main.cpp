@@ -151,7 +151,7 @@ int main() {
 	s.printPSatisf();
 	Solution initial = s;
 
-	cout << "Score of initial solution: " << s.fitness << "\n";
+	//cout << "Score of initial solution: " << s.fitness << "\n";
 	Solution best = s;
 	int temperature = 7;
 
